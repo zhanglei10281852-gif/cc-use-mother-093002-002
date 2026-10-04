@@ -3,8 +3,19 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
-from resource_review.contracts import ResourceVersion, ReviewFinding
 
-entity = ResourceVersion("E-DEMO", "智能教学资源风险审校", 1)
-record = ReviewFinding("R-DEMO", entity.entity_id, "已登记")
-print(json.dumps({"entity": entity.display_name, "revision": entity.revision, "record_state": record.category}, ensure_ascii=False))
+
+def smoke() -> None:
+    from resource_review.contracts import ResourceVersion, ReviewFinding
+
+    entity = ResourceVersion("E-DEMO", "智能教学资源风险审校", 1)
+    record = ReviewFinding("R-DEMO", entity.entity_id, "已登记")
+    print(json.dumps({"entity": entity.display_name, "revision": entity.revision, "record_state": record.category}, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        from resource_review.cli import main
+
+        raise SystemExit(main(sys.argv[1:]))
+    smoke()
